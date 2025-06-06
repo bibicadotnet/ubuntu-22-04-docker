@@ -109,17 +109,6 @@ remove_xanmod_kernels() {
     
     echo ""
     
-    # If force_mode is true, skip confirmation
-    if [ "$force_mode" != "true" ]; then
-        read -p "Tiếp tục xóa các kernel này? (y/N): " -r
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            print_warning "Hủy bỏ quá trình xóa kernel"
-            return 1
-        fi
-    else
-        print_info "Tự động xóa kernel XanMod cũ để cài đặt kernel mới..."
-    fi
-    
     print_msg "Đang xóa kernel XanMod..."
     echo "$xanmod_packages" | xargs apt-get remove --purge -y
     
