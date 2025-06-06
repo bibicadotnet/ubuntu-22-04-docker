@@ -221,6 +221,7 @@ install_xanmod() {
     
     # Install packages
     print_msg "Cài đặt XanMod Kernel..."
+	print_info "Quá trình này có thể mất vài phút..."
     if ! dpkg -i "$image_file" "$headers_file"; then
         print_warning "Có lỗi, thử sửa dependencies..."
         apt-get install -f -y
