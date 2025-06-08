@@ -48,8 +48,11 @@ Các thiết lập rất cơ bản
 
 ### Hoàn thành
 
-Sau khi xong 4 bước trên thì `reboot` lại VPS rồi chạy `bash /root/vps.sh --info` để xem thông tin sơ bộ toàn bộ VPS
-
+Sau khi xong 4 bước trên thì `reboot` lại VPS rồi xem lại thông tin sơ bộ toàn bộ VPS
+```
+bash /root/vps.sh --info
+``` 
+Lượng RAM sử dụng giao động **130MB - 140MB**
 ```
 ========================================
 THÔNG TIN HỆ THỐNG
