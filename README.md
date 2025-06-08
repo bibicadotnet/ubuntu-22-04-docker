@@ -113,9 +113,9 @@ curl wget git htop unzip nano zip zstd jq sudo python3 lsof
 ### Speedtest Kernel
 Thay đổi các phiên bản XanMod Kernel khác nhau, thử speedtest đơn giản, so sánh dùng Kernel nào kết quả tốt hơn thì dùng
 
-Ví dụ:
+Quá trình chạy hơi lâu, nên cho chạy ngầm, lúc nào rảnh thì mở log ra xem lại
 ```
-time wget http://speedtest.tele2.net/1GB.zip -O /dev/null
+nohup ./speedtest_kernel.sh >/dev/null 2>&1 &
 ```
 Hoặc có thể thử trực tiếp nếu chạy qua SOCKS5, truy cập vào trang thử download, upload ....
 
