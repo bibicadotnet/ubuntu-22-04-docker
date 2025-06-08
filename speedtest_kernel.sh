@@ -5,7 +5,7 @@
 
 LOG_FILE="kernel_benchmark_$(date +%Y%m%d_%H%M%%S).txt"
 KERNEL_VERSION=$(uname -r)
-RUNS=2
+RUNS=30
 TEST_DURATION=15
 
 # Colors for output
