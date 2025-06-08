@@ -4,6 +4,7 @@
 # Target: Ubuntu 22.04 Server
 # Maintains: SSH, Networking, User sessions
 set -e
+clear
 
 # === Pre-flight checks ===
 # Check if running as root
@@ -96,14 +97,14 @@ disable_service networkd-dispatcher "Network dispatcher"
 disable_service systemd-networkd-wait-online "Network wait online"
 disable_service systemd-resolved "DNS resolver (using static resolv.conf)"
 
-## Ensure resolv.conf exists with valid DNS (critical!)
+# Set static resolv.conf with public DNS
 if lsattr /etc/resolv.conf 2>/dev/null | grep -q '\-i\-'; then
     chattr -i /etc/resolv.conf
-    log_info "Removed immutable attribute from existing resolv.conf"
 fi
 rm -f /etc/resolv.conf
 echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > /etc/resolv.conf
 chattr +i /etc/resolv.conf
+log_info "Configured static DNS resolv.conf (Google + Cloudflare)"
 
 # Storage services
 disable_service lvm2-monitor "LVM monitoring"
