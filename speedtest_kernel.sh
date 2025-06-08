@@ -1,4 +1,5 @@
 #!/bin/bash
+# Github: https://github.com/bibicadotnet/ubuntu-22-04-docker
 
 # ================== KIỂM TRA & CÀI ĐẶT CHO DEBIAN ==================
 REQUIRED_CMDS=("bc" "curl" "awk" "tee" "uname" "date")
