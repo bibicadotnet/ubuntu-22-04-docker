@@ -3,6 +3,7 @@
 # Purpose: Remove bloatware while keeping critical services
 # Target: Ubuntu 22.04 Server
 # Maintains: SSH, Networking, User sessions
+# Github: https://github.com/bibicadotnet/ubuntu-22-04-docker
 set -e
 clear
 
