@@ -16,7 +16,7 @@ Chọn **22.04** thông dụng, an toàn
 ---
 
 ### Ubuntu Minimal Debloat
-Xóa các thứ không cần thiết khi chạy Docker
+Xóa các thứ không cần thiết trên Ubuntu khi chạy Docker
 ```
 LINK ubuntu-minimal-debloat
 ```
