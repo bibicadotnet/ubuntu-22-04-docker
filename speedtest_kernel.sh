@@ -3,18 +3,6 @@
 # Kernel Network Performance Benchmark
 # Sử dụng iperf3 localhost để test kernel TCP/IP stack
 
-# Kiểm tra và cài đặt iperf3 nếu chưa có
-if ! command -v iperf3 &> /dev/null; then
-    echo "iperf3 chưa được cài đặt, tiến hành cài đặt..."
-    sudo apt-get update
-    sudo apt-get install -y iperf3
-    if ! command -v iperf3 &> /dev/null; then
-        echo "Không thể cài đặt iperf3, vui lòng cài đặt thủ công."
-        exit 1
-    fi
-    echo "iperf3 đã được cài đặt thành công."
-fi
-
 LOG_FILE="kernel_benchmark_$(date +%Y%m%d_%H%M%%S).txt"
 KERNEL_VERSION=$(uname -r)
 RUNS=2
