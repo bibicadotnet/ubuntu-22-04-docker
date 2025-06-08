@@ -7,7 +7,7 @@
 # Hướng dẫn cài đặt nhanh:
 # wget -qO xanmod-installer.sh https://go.bibica.net/xanmod && bash xanmod-installer.sh
 #
-# Trang dự án: https://github.com/bibicadotnet/new-vps-ubuntu
+# Trang dự án: https://github.com/bibicadotnet/ubuntu-22-04-docker
 
 set -e  # Exit on any error
 
