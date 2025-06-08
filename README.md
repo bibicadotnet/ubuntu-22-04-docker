@@ -18,7 +18,7 @@ Chọn **22.04** thông dụng, an toàn
 ### 2. Ubuntu Minimal Debloat
 Xóa các thứ không cần thiết trên Ubuntu khi chạy Docker
 ```
-wget -qO ubuntu-debloat.sh https://go.bibica.net/ubuntu-22-04-minimal-debloat && sudo bash ubuntu-debloat.sh
+wget -qO debloat.sh https://go.bibica.net/ubuntu-22-04-minimal-debloat && sudo bash debloat.sh
 ```
 
 ---
