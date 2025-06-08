@@ -1,11 +1,35 @@
 #!/bin/bash
-# Ubuntu Cloud Image Optimization Script - SAFE VERSION (REV 2.0)
-# Optimizes Ubuntu 22.04 for Docker while keeping SSH/Network stable
+# Ubuntu Minimal Debloat Script (v1.0)
+# Purpose: Remove bloatware while keeping critical services
+# Target: Ubuntu 22.04 Server
+# Maintains: SSH, Networking, User sessions
 set -e
 
-echo "=== Ubuntu Optimization for Docker (SAFE VERSION v2.0) ==="
-echo "Keeps systemd-networkd and systemd-logind for SSH stability"
-echo "Press Ctrl+C to cancel, or Enter to continue..."
+# === Pre-flight checks ===
+# Check if running as root
+if [[ $EUID -ne 0 ]]; then
+   log_error "This script must be run as root"
+   exit 1
+fi
+
+# Check Ubuntu version
+if ! command -v lsb_release &> /dev/null; then
+    log_error "lsb_release command not found. This script requires Ubuntu."
+    exit 1
+fi
+
+UBUNTU_VERSION=$(lsb_release -rs)
+if [[ "$UBUNTU_VERSION" != "22.04" ]]; then
+    log_error "This script is designed for Ubuntu 22.04 only. Detected version: $UBUNTU_VERSION"
+    exit 1
+fi
+
+echo -e "\033[1;36m=== Ubuntu 22.04 Minimal Debloat Tool ===\033[0m"
+echo -e "[\033[1;33m!\033[0m] Will REMOVE:"
+echo -e "  - Snap packages\n  - Cloud-init\n  - Non-essential services"
+echo -e "[\033[1;32m✓\033[0m] Will PRESERVE:"
+echo -e "  - OpenSSH\n  - systemd-networkd\n  - systemd-logind"
+echo -n -e "\n\033[1;37mPress Ctrl+C to cancel, or Enter to debloat...\033[0m"
 read
 
 # Colors for output
