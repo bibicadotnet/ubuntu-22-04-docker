@@ -1,4 +1,4 @@
-# Cài đặt  VPS chạy Docker – cấu hình căn bản và nâng cao [Giai đoạn hoàn thiện]
+# Cài đặt  VPS chạy Docker – cấu hình căn bản và nâng cao [bài viết đang giai đoạn hoàn thiện]
 
 ---
 
