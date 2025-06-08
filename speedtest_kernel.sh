@@ -17,7 +17,7 @@ fi
 
 LOG_FILE="kernel_benchmark_$(date +%Y%m%d_%H%M%%S).txt"
 KERNEL_VERSION=$(uname -r)
-RUNS=30
+RUNS=2
 TEST_DURATION=15
 
 # Colors for output
@@ -78,18 +78,33 @@ if ! command -v bc &> /dev/null; then
     fi
 fi
 
-# Header
 echo "============================================="
 echo "    KERNEL NETWORK PERFORMANCE BENCHMARK"
 echo "============================================="
 echo "=============================================" >> "$LOG_FILE"
 echo "    KERNEL NETWORK PERFORMANCE BENCHMARK" >> "$LOG_FILE"
 echo "=============================================" >> "$LOG_FILE"
-log_info "Kernel: $KERNEL_VERSION"
+
 log_info "Hostname: $(hostname)"
-log_info "CPU: $(lscpu | grep 'Model name' | cut -d':' -f2 | xargs 2>/dev/null || echo 'Unknown')"
-log_info "Memory: $(free -h | grep '^Mem:' | awk '{print $2}' 2>/dev/null || echo 'Unknown')"
+log_info "OS: $(lsb_release -ds 2>/dev/null || awk -F= '/^PRETTY_NAME/ {gsub(/\"/, "", $2); print $2}' /etc/os-release 2>/dev/null || echo "Unknown")"
+log_info "Kernel: $(uname -r)"
+log_info "Arch: $(uname -m) ($(getconf LONG_BIT)-bit)"
+log_info "CPU: $(awk -F: '/model name/ {gsub(/^[ \t]+/, "", $2); print $2; exit}' /proc/cpuinfo)"
+log_info "CPU Cores: $(nproc)"
+log_info "RAM: $(awk '/MemTotal:|MemAvailable:|MemFree:|Buffers:|Cached:/ {if($1=="MemTotal:") total=$2/1024; if($1=="MemAvailable:") avail=$2/1024; if($1=="MemFree:") free=$2/1024; if($1=="Buffers:") buffers=$2/1024; if($1=="Cached:") cached=$2/1024} END {used = total - free - buffers - cached; printf "%s total, %s used, %s available", (total<1000 ? int(total)" MB" : sprintf("%.1f GB",total/1024)), (used<1000 ? int(used)" MB" : sprintf("%.1f GB",used/1024)), (avail<1000 ? int(avail)" MB" : sprintf("%.1f GB",avail/1024))}' /proc/meminfo)"
+log_info "Swap: $(awk '/SwapTotal:|SwapFree:/ {if($1=="SwapTotal:") total=$2/1024; if($1=="SwapFree:") free=$2/1024} END {used = total - free; if(total==0) print "None total, None used, None free"; else printf "%s total, %s used, %s free", (total<1000 ? int(total)" MB" : sprintf("%.1f GB",total/1024)), (used<1000 ? int(used)" MB" : sprintf("%.1f GB",used/1024)), (free<1000 ? int(free)" MB" : sprintf("%.1f GB",free/1024))}' /proc/meminfo)"
+log_info "Disk: $(df -h / | awk 'NR==2 {print $2 " total, " $3 " used, " $4 " free"}')"
+log_info "Public IP: $(curl -s --max-time 3 ifconfig.me 2>/dev/null || echo "Unknown")"
+log_info "Private IP: $(ip -4 addr show | awk '/inet.*brd/ && !/127\.0\.0\.1/ {gsub(/\/.*/, "", $2); print $2; exit}')"
+log_info "Main Interface: $(ip -4 route show default | awk '{print $5; exit}')"
+log_info "TCP CC: $(sysctl -n net.ipv4.tcp_congestion_control 2>/dev/null || echo "Unknown")"
+log_info "Virtualization: $(systemd-detect-virt 2>/dev/null || awk '/hypervisor/ {print "Yes"; exit} END {if(!found) print "None"}' /proc/cpuinfo)"
+log_info "Load Average: $(awk '{print $1", "$2", "$3}' /proc/loadavg)"
+log_info "Uptime: $(awk '{days=int($1/86400); hours=int(($1%86400)/3600); mins=int(($1%3600)/60); if(days>0) printf "%d days, ", days; if(hours>0) printf "%d hours, ", hours; printf "%d minutes", mins}' /proc/uptime)"
+log_info "Location: $(curl -s --max-time 2 ipinfo.io/city 2>/dev/null), $(curl -s --max-time 2 ipinfo.io/country 2>/dev/null)"
+log_info "System Time: $(date +'%d/%m/%Y at %I:%M %p (GMT%:z)')"
 log_info "Test runs: $RUNS x ${TEST_DURATION}s each"
+
 echo "---------------------------------------------"
 echo "---------------------------------------------" >> "$LOG_FILE"
 
