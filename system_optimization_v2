@@ -169,32 +169,30 @@ systemctl enable chrony
 # Cài đặt múi giờ Việt Nam
 timedatectl set-timezone Asia/Ho_Chi_Minh
 
-create_swapfile() {
-    local desired=${1}000000
-    local current=$(grep /swapfile /proc/swaps | awk '{print $3}')
+create_swap() {
+    # Tắt và xóa swap cũ
+    swapoff /swapfile 2>/dev/null && rm -f /swapfile
 
-    if [ -n "$current" ] && [ "$current" -ge "$desired" ]; then
-        echo "Swapfile đã tồn tại và đủ lớn."
-    else
-        echo "Tạo swapfile ${1}G..."
-        swapoff /swapfile 2>/dev/null
-        rm -f /swapfile
-        fallocate -l ${1}G /swapfile
-        chmod 600 /swapfile
-        mkswap /swapfile
-        swapon /swapfile
-        grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
-    fi
+    # Tạo swapfile (ưu tiên fallocate, fallback dd)
+    fallocate -l ${1}G /swapfile 2>/dev/null || 
+    dd if=/dev/zero of=/swapfile bs=1M count=$(($1*1024)) status=progress
 
-    echo 'vm.swappiness=10' > /etc/sysctl.d/99-swappiness.conf
-    sysctl -w vm.swappiness=10
+    # Kích hoạt swap
+    chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+    
+    # Cấu hình tự động mount
+    grep -q swapfile /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+    
+    # Thiết lập swappiness
+    echo 'vm.swappiness=10' > /etc/sysctl.d/99-swap.conf
+    sysctl -p /etc/sysctl.d/99-swap.conf >/dev/null
 }
 
-# Xác định dung lượng swap phù hợp
+# Xác định dung lượng swap 
 ram=$(free -g | awk '/^Mem:/ {print $2}')
-[ "$ram" -lt 2 ] && swap=2 || swap=4
+[ "$ram" -lt 2 ] && swap=1 || swap=2
 
-create_swapfile $swap
+create_swap $swap
 
 
 # ========================================
