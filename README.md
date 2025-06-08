@@ -2,7 +2,7 @@
 
 ---
 
-### Reinstall OS
+### 1. Reinstall OS
 Cài 1 OS mới sạch sẽ thông qua Reinstall 
 ```
 sudo -s
@@ -15,23 +15,15 @@ Chọn **22.04** thông dụng, an toàn
 
 ---
 
-### Ubuntu Minimal Debloat
+### 2. Ubuntu Minimal Debloat
 Xóa các thứ không cần thiết trên Ubuntu khi chạy Docker
 ```
-LINK ubuntu-minimal-debloat
+wget -qO ubuntu-debloat.sh https://go.bibica.net/ubuntu-22-04-minimal-debloat && sudo bash ubuntu-debloat.sh
 ```
 
 ---
 
-### System Optimization
-```
-wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
-```
-Các thiết lập rất an toàn, có thể yên tâm sử dụng
-
----
-
-### Cài đặt XanMod Kernel trên Debian
+### 3. Cài đặt XanMod Kernel trên Debian
 ```
 wget -qO xanmod-installer.sh https://go.bibica.net/xanmod && bash xanmod-installer.sh
 ```
@@ -44,8 +36,19 @@ Thử nhánh Main, Edge hoặc LTS tùy thích, bản nào cho hiệu năng ping
 Thấy không hiệu quả thì sử dụng tùy chon 4 để về lại Kernel mặc định
 
 ---
+
+### 4. System Optimization
+```
+wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
+```
+Các thiết lập rất cơ bản
+
+---
+
 ### Hoàn thành
-Chạy `bash /root/vps.sh --info` để xem thông tin sơ bộ toàn bộ VPS
+
+Sau khi xong 4 bước trên thì `reboot` lại VPS rồi chạy `bash /root/vps.sh --info` để xem thông tin sơ bộ toàn bộ VPS
+
 ```
 ========================================
 THÔNG TIN HỆ THỐNG
@@ -111,6 +114,7 @@ curl wget git htop unzip nano zip zstd jq sudo python3 lsof
 ---
 
 ### Speedtest Kernel
+
 Thay đổi các phiên bản XanMod Kernel khác nhau, thử speedtest đơn giản, so sánh dùng Kernel nào kết quả tốt hơn thì dùng
 
 Quá trình chạy hơi lâu, nên cho chạy ngầm, lúc nào rảnh thì mở log ra xem lại
