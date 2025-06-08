@@ -20,6 +20,7 @@ Xóa các thứ không cần thiết trên Ubuntu khi chạy Docker
 ```
 wget -qO debloat.sh https://go.bibica.net/ubuntu-22-04-minimal-debloat && sudo bash debloat.sh
 ```
+Bản Debloat viết riêng khi sử dụng Ubuntu 22.04 Minimal cài qua bộ reinstall của bin456789
 
 ---
 
