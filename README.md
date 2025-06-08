@@ -8,10 +8,26 @@ Cài 1 OS mới sạch sẽ thông qua Reinstall
 sudo -s
 cd ~
 curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh
-bash reinstall.sh ubuntu 22.04 --minimal
+bash reinstall.sh ubuntu 22.04 --ci --minimal
 # root with a default password 123@@@
 ```
 Chọn **22.04** thông dụng, an toàn
+
+---
+
+### Ubuntu Minimal Debloat
+Xóa các thứ không cần thiết khi chạy Docker
+```
+LINK ubuntu-minimal-debloat
+```
+
+---
+
+### System Optimization
+```
+wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
+```
+Các thiết lập rất an toàn, có thể yên tâm sử dụng
 
 ---
 
@@ -28,14 +44,69 @@ Thử nhánh Main, Edge hoặc LTS tùy thích, bản nào cho hiệu năng ping
 Thấy không hiệu quả thì sử dụng tùy chon 4 để về lại Kernel mặc định
 
 ---
-
-### System Optimization
+### Hoàn thành
+Chạy `bash /root/vps.sh --info` để xem thông tin sơ bộ toàn bộ VPS
 ```
-wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
-```
-Các thiết lập rất an toàn, có thể yên tâm sử dụng
+========================================
+THÔNG TIN HỆ THỐNG
+----------------------------------------
+Hostname            : ubuntu
+OS                  : Ubuntu 22.04.5 LTS
+Kernel              : 6.15.1-x64v3-xanmod1
+Arch                : x86_64 (64-bit)
+CPU                 : AMD EPYC 7551 32-Core Processor
+CPU Cores           : 2
+RAM                 : 955 MB total, 133 MB used, 696 MB available
+Swap                : 1.0 GB total, 0 MB used, 1.0 GB free
+Disk                : 46G total, 4.1G used, 40G free
+Public IP           : 146.215.215.158
+Private IP          : 10.0.0.197
+Main Interface      : ens3
+TCP CC              : bbr
+Virtualization      : kvm
+Load Average        : 0.02, 0.08, 0.04
+Uptime              : 4 minutes
+Location            : San Jose, US
+System Time         : 08/06/2025 at 08:08 AM (GMT+07:00)
 
-- Trung bình sau khi cài đặt xong tất cả mọi thứ, hệ thống sử dụng khoảng **150MB RAM**
+========================================
+CẤU HÌNH HỆ THỐNG
+----------------------------------------
+[sysctl.conf]
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+vm.swappiness=10
+vm.dirty_ratio=5
+vm.dirty_background_ratio=2
+vm.dirty_expire_centisecs=1000
+vm.dirty_writeback_centisecs=200
+vm.vfs_cache_pressure=200
+fs.file-max=30000
+
+[Docker 28.2.2]
+storage-driver=overlay2
+log-driver=json-file
+log-opts.max-size=10m
+log-opts.max-file=3
+max-concurrent-downloads=10
+max-concurrent-uploads=10
+dns=8.8.8.8,1.1.1.1
+userland-proxy=False
+
+[DNS]
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+
+[Chrony]
+Chrony trạng thái : Normal
+Sai số đồng bộ    : ±3.05 ms
+
+[Phần mềm đã cài đặt]
+curl wget git htop unzip nano zip zstd jq sudo python3 lsof
+```
 
 ---
 
