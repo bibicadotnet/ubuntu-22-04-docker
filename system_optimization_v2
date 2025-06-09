@@ -17,9 +17,6 @@ if ! command -v dpkg >/dev/null 2>&1; then
     exit 1
 fi
 
-# ========================================
-# BIẾN TOÀN CỤC
-# ========================================
 
 # Danh sách các app cần cài
 apps=(curl wget git htop unzip nano zip zstd jq sudo python3 net-tools lsof iputils-ping)
@@ -165,7 +162,7 @@ echo "Hoàn tất quá trình cập nhật hệ điều hành!"
 sudo apt install -y "${apps[@]}"
 
 # ========================================
-# TỐI ƯU HÓA HỆ THỐNG
+# Cài đặt ứng dụng hay dùng, tắt 1 số thứ không dùng
 # ========================================
 
 cat <<EOF | sudo tee /etc/sysctl.d/99-disable-ipv6.conf
