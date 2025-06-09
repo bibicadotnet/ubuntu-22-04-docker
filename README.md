@@ -2,6 +2,8 @@
 
 Note: toàn bộ nội dung bài này, thuần túy là thử nghiệm, dùng cá nhân, không nên áp dụng vào các hệ thống đang vận hành ổn định
 
+Tất cả các setting đều có thể sẽ bị điều chỉnh lại, cho tới khi dòng note này bị xóa bỏ 😅
+
 ---
 
 ### 1. Reinstall OS
