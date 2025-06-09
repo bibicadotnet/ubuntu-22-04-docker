@@ -61,10 +61,6 @@ show_info() {
 	grep -v '^\s*#' /etc/sysctl.d/99-disable-ipv6.conf | grep -v '^\s*$'
 	echo
 
-	echo "[TCP BBR]"
-	grep -v '^\s*#' /etc/sysctl.d/99-tcp-bbr.conf | grep -v '^\s*$'
-	echo
-
 	echo "[Memory Config]"
 	grep -v '^\s*#' /etc/sysctl.d/99-memory-config.conf | grep -v '^\s*$'
 	echo
@@ -119,8 +115,6 @@ fi
 # ========================================
 # CẤU HÌNH CƠ BẢN HỆ THỐNG
 # ========================================
-
-# Kiểm tra và thêm hostname vào file /etc/hosts
 hostname=$(hostname)
 localhost_ip="127.0.0.1"
 hosts_file="/etc/hosts"
@@ -173,7 +167,7 @@ sudo apt install -y "${apps[@]}"
 # ========================================
 # TỐI ƯU HÓA HỆ THỐNG
 # ========================================
-# File 1: Disable IPv6 - OK
+
 cat <<EOF | sudo tee /etc/sysctl.d/99-disable-ipv6.conf
 # Disable IPv6
 net.ipv6.conf.all.disable_ipv6 = 1
@@ -181,20 +175,6 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
 sudo sysctl -p /etc/sysctl.d/99-disable-ipv6.conf
-
-# File 2: TCP BBR - OK  
-cat <<EOF | sudo tee /etc/sysctl.d/99-tcp-bbr.conf
-# Fair Queueing + BBR Congestion Control
-net.core.default_qdisc = fq
-net.ipv4.tcp_congestion_control = bbr
-# Optimize for high performance
-net.ipv4.tcp_slow_start_after_idle = 0
-# Basic TCP optimizations
-net.ipv4.tcp_timestamps = 1
-net.ipv4.tcp_sack = 1
-net.ipv4.tcp_window_scaling = 1
-EOF
-sudo sysctl -p /etc/sysctl.d/99-tcp-bbr.conf
 
 
 # Cài đặt múi giờ Việt Nam
@@ -206,143 +186,27 @@ systemctl start chrony
 systemctl enable chrony
 
 # ========================================
-# TỐI ƯU HÓA THEO DUNG LƯỢNG RAM
+# Tạo swapfile
 # ========================================
-CONFIG_FILE="/etc/sysctl.d/99-memory-config.conf"
+RAM_GB=$(awk '/MemTotal/ {printf "%.0f", $2/1024/1024}' /proc/meminfo)
+SWAP_SIZE=$([ $RAM_GB -le 2 ] && echo "2G" || echo "4G")
 
-echo "=== Ubuntu 25.04 Memory Configuration ==="
+echo "RAM: ${RAM_GB}GB - Creating ${SWAP_SIZE} swapfile"
 
-# Hàm để xóa cấu hình cũ
-remove_sysctl_lines() {
-    local file="$1"
-    shift
-    for pattern in "$@"; do
-        if [[ -f "$file" ]]; then
-            sed -i "/${pattern}/d" "$file"
-            echo "Removed existing: $pattern"
-        fi
-    done
-}
+# Remove old swap
+sudo swapoff /swapfile 2>/dev/null
+sudo rm -f /swapfile
+sudo sed -i '/\/swapfile/d' /etc/fstab
 
-# Hàm để cập nhật cấu hình sysctl
-update_sysctl() {
-    local ram_size=$1
-    echo "Cập nhật cấu hình sysctl cho $ram_size GB RAM..."
-    
-    declare -A config=(
-        [0]="5 2 1000 200 200 30000"
-        [1]="10 5 2000 500 100 50000"
-        [2]="15 10 3000 750 75 100000"
-        [4]="20 15 4000 1000 50 150000"
-        [8]="25 20 5000 1500 50 200000"
-        [24]="20 10 5000 1000 50 200000"
-    )
-    
-    IFS=' ' read -r dirty_ratio dirty_bg_ratio expire writeback vfs_pressure file_max <<< "${config[$ram_size]:-${config[24]}}"
-    
-    # Backup existing config
-    if [[ -f "$CONFIG_FILE" ]]; then
-        cp "$CONFIG_FILE" "${CONFIG_FILE}.backup.$(date +%Y%m%d_%H%M%S)"
-    fi
-    
-    # Xóa các dòng cũ từ tất cả sysctl files
-    remove_sysctl_lines "$CONFIG_FILE" \
-        "^vm\.swappiness" \
-        "^vm\.dirty_ratio" \
-        "^vm\.dirty_background_ratio" \
-        "^vm\.dirty_expire_centisecs" \
-        "^vm\.dirty_writeback_centisecs" \
-        "^vm\.vfs_cache_pressure" \
-        "^fs\.file-max"
-    
-    # Tạo cấu hình mới
-    cat <<EOF | sudo tee "$CONFIG_FILE" > /dev/null
-# Memory Configuration for Ubuntu 25.04
-# RAM Size: $ram_size GB
-# Applied on: $(date)
+# Create new swap
+sudo fallocate -l $SWAP_SIZE /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
 
-vm.swappiness = 10
-vm.dirty_ratio = $dirty_ratio
-vm.dirty_background_ratio = $dirty_bg_ratio
-vm.dirty_expire_centisecs = $expire
-vm.dirty_writeback_centisecs = $writeback
-vm.vfs_cache_pressure = $vfs_pressure
-fs.file-max = $file_max
-EOF
-    
-    # Apply configuration
-    sudo sysctl -p "$CONFIG_FILE"
-    echo "Memory configuration applied successfully!"
-}
-
-# Hàm để tạo swapfile
-create_swapfile() {
-    local swap_size=$1
-    
-    if swapon --show | grep -q '/swapfile'; then
-        echo "Swapfile đã tồn tại. Bỏ qua."
-        return
-    fi
-    
-    echo "Tạo swapfile $swap_size GB..."
-    
-    # Tạo swapfile
-    sudo fallocate -l ${swap_size}G /swapfile
-    sudo chmod 600 /swapfile
-    sudo mkswap /swapfile
-    sudo swapon /swapfile
-    
-    # Thêm vào fstab nếu chưa có
-    if ! grep -q '/swapfile' /etc/fstab; then
-        echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
-        echo "Swapfile added to /etc/fstab"
-    fi
-    
-    echo "Swapfile $swap_size GB created successfully!"
-}
-
-# Kiểm tra dung lượng RAM
-ram_size=$(free -g | grep Mem | awk '{print $2}')
-echo "Detected RAM: $ram_size GB"
-
-# Chọn mốc RAM thấp hơn nếu nằm trong khoảng
-if [ "$ram_size" -lt 1 ]; then
-    ram_size=0
-    swap_size=1
-elif [ "$ram_size" -le 1 ]; then
-    ram_size=1
-    swap_size=1
-elif [ "$ram_size" -le 2 ]; then
-    ram_size=2
-    swap_size=2
-elif [ "$ram_size" -le 4 ]; then
-    ram_size=4
-    swap_size=4
-elif [ "$ram_size" -le 8 ]; then
-    ram_size=8
-    swap_size=4
-elif [ "$ram_size" -le 24 ]; then
-    ram_size=24
-    swap_size=4
-else
-    ram_size=24
-    swap_size=4
-fi
-
-echo "Configuration: RAM=$ram_size GB, SWAP=$swap_size GB"
-
-# Gọi hàm để cập nhật cấu hình dựa trên dung lượng RAM
-update_sysctl $ram_size
-
-# Gọi hàm để tạo swapfile
-create_swapfile $swap_size
-
-echo "=== Configuration Summary ==="
-echo "Config file: $CONFIG_FILE"
-echo "Current memory settings:"
-sysctl vm.swappiness vm.dirty_ratio vm.dirty_background_ratio
-echo "Swap status:"
-swapon --show
+sudo sh -c 'echo "vm.swappiness = 10" > /etc/sysctl.d/99-memory-config.conf'
+sudo sysctl -p /etc/sysctl.d/99-memory-config.conf
 
 # ========================================
 # Tăng Thời Gian Kết Nối SSH
