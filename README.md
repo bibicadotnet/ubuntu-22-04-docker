@@ -1,5 +1,7 @@
 # Cài đặt  VPS chạy Docker – cấu hình căn bản và nâng cao [bài viết đang giai đoạn hoàn thiện]
 
+Note: toàn bộ nội dung bài này, thuần túy là thử nghiệm, dùng cá nhân, không nên áp dụng vào các hệ thống đang vận hành ổn định
+
 ---
 
 ### 1. Reinstall OS
