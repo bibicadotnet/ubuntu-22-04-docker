@@ -239,13 +239,16 @@ sysctl -p /etc/sysctl.d/99-memory-config.conf
 # CẤU HÌNH SSH
 # ========================================
 
-# Tăng thời gian kết nối SSH (2 giờ)
+# Tăng thời gian kết nối SSH (6 giờ)
 SSH_CONFIG="/etc/ssh/sshd_config"
 
 # Xóa dòng cũ (kể cả bị comment), sau đó thêm đúng cấu hình
 sed -i '/^\s*#\?\s*ClientAliveInterval/d' "$SSH_CONFIG"
+sed -i '/^\s*#\?\s*ClientAliveCountMax/d' "$SSH_CONFIG"
 echo "ClientAliveInterval 7200" >> "$SSH_CONFIG"
+echo "ClientAliveCountMax 3" >> "$SSH_CONFIG"
 
+# Khởi động lại SSH để áp dụng
 systemctl restart sshd
 
 # ========================================
