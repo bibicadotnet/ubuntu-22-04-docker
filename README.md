@@ -30,7 +30,7 @@ Bản Debloat viết riêng khi sử dụng Ubuntu 22.04 Minimal cài qua bộ r
 
 ### 3. System Optimization
 ```
-wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
+wget -qO vps.sh https://go.bibica.net/ubuntu-22-04-basic-optimization && sudo bash vps.sh
 ```
 Các thiết lập rất cơ bản
 
