@@ -127,7 +127,7 @@ Thay đổi các phiên bản XanMod Kernel khác nhau, thử speedtest đơn gi
 
 Quá trình chạy hơi lâu, nên cho chạy ngầm, lúc nào rảnh thì mở log ra xem lại
 ```
-nohup bash -c "$(curl -fsSL https://raw.githubusercontent.com/bibicadotnet/ubuntu-22-04-docker/main/speedtest_kernel.sh)" >/dev/null 2>&1 &
+nohup bash -c "$(curl -fsSL wget -qO benchmark.sh https://go.bibica.net/kernel_benchmark && bash benchmark.sh)" >/dev/null 2>&1 &
 ```
 Hoặc có thể thử trực tiếp nếu chạy qua SOCKS5, truy cập vào trang thử download, upload ....
 
