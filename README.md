@@ -126,4 +126,57 @@ nohup bash -c "$(curl -fsSL wget -qO benchmark.sh https://go.bibica.net/kernel_b
 Hoặc có thể thử trực tiếp nếu chạy qua SOCKS5, truy cập vào trang thử download, upload ....
 
 ---
-XanMod Kernel thường không cho ra điểm số cao, dùng vì đơn giản muốn thử xem thế nào 😅
+XanMod Kernel thường không cho ra điểm số TCP stack cao, dùng vì đơn giản muốn thử xem thế nào 😅
+
+<details>
+<summary><strong>Ubuntu 22.04 Kernel: 6.15.2-x64v3-xanmod1</strong></summary>
+
+<pre><code>[23:13:36] INFO: Hostname: ubuntu
+[23:13:36] INFO: OS: Ubuntu 22.04.5 LTS
+[23:13:36] INFO: Kernel: 6.15.2-x64v3-xanmod1
+[23:13:36] INFO: Arch: x86_64 (64-bit)
+[23:13:36] INFO: CPU: AMD EPYC 7551 32-Core Processor
+[23:13:36] INFO: CPU Cores: 2
+[23:13:36] INFO: RAM: 955 MB total, 157 MB used, 676 MB available
+[23:13:36] INFO: Swap: 2.0 GB total, 0 MB used, 2.0 GB free
+[23:13:36] INFO: Disk: 46G total, 5.1G used, 39G free
+[23:22:19] SUMMARY: Kernel: 6.15.2-x64v3-xanmod1
+=============================================
+               FINAL RESULTS
+=============================================
+[23:22:19] SUMMARY: TCP Loopback Performance:
+[23:22:19] SUMMARY:   Valid tests: 30/30
+[23:22:19] SUMMARY:   Average: 4.62 Gbps
+[23:22:19] SUMMARY:   Min: 4.48 Gbps
+[23:22:19] SUMMARY:   Max: 4.76 Gbps
+[23:22:19] SUMMARY:   Std Dev: 0.07 Gbps
+[23:22:19] SUMMARY:   Coefficient of Variation: 1.52%
+[23:22:19] SUMMARY: Performance Rating: AVERAGE (2-5 Gbps)
+[23:22:19] SUMMARY: Consistency: EXCELLENT (CV <= 5%)</code></pre>
+</details>
+
+<details>
+<summary><strong>Ubuntu 25.04 Kernel: 6.14.0-1005-oracle</strong></summary>
+
+<pre><code>[06:17:00] INFO: OS: Ubuntu 25.04
+[06:17:00] INFO: Kernel: 6.14.0-1005-oracle
+[06:17:00] INFO: Arch: x86_64 (64-bit)
+[06:17:00] INFO: CPU: AMD EPYC 7551 32-Core Processor
+[06:17:00] INFO: CPU Cores: 2
+[06:17:00] INFO: RAM: 956 MB total, 291 MB used, 542 MB available
+[06:17:00] INFO: Swap: 2.0 GB total, 58 MB used, 1.9 GB free
+[06:17:00] INFO: Disk: 46G total, 4.3G used, 39G free
+[06:25:40] SUMMARY: Kernel: 6.14.0-1005-oracle
+=============================================
+               FINAL RESULTS
+=============================================
+[06:25:40] SUMMARY: TCP Loopback Performance:
+[06:25:40] SUMMARY:   Valid tests: 30/30
+[06:25:40] SUMMARY:   Average: 7.04 Gbps
+[06:25:40] SUMMARY:   Min: 6.77 Gbps
+[06:25:40] SUMMARY:   Max: 7.31 Gbps
+[06:25:40] SUMMARY:   Std Dev: 0.14 Gbps
+[06:25:40] SUMMARY:   Coefficient of Variation: 1.99%
+[06:25:40] SUMMARY: Performance Rating: GOOD (5-10 Gbps)
+[06:25:40] SUMMARY: Consistency: EXCELLENT (CV <= 5%)</code></pre>
+</details>
