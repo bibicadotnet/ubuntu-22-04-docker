@@ -132,20 +132,4 @@ nohup bash -c "$(curl -fsSL https://raw.githubusercontent.com/bibicadotnet/ubunt
 Hoặc có thể thử trực tiếp nếu chạy qua SOCKS5, truy cập vào trang thử download, upload ....
 
 ---
-
-### 📊 So sánh hiệu năng download 1GB theo kernel (chuẩn theo `6.8.0-1026-oracle`)
-
-| **Kernel**                | **Thời gian thực (real)** | **Tốc độ trung bình** | **Chênh lệch so với Oracle** |
-| ------------------------- | ------------------------- | --------------------- | ---------------------------- |
-| **6.8.0-1026-oracle**     | 3 phút 11 giây (\~191.2s) | **5.37 MB/s**         | ⚙️ 0.00% (mốc tham chiếu)    |
-| **6.15.1-x64v3-xanmod1**  | 3 phút 2 giây (\~182.5s)  | **5.62 MB/s**         | 🔼 **+4.66%**                |
-| **6.14.10-x64v3-xanmod1** | 3 phút 16 giây (\~196.6s) | **5.22 MB/s**         | 🔽 **−2.79%**                |
-| **6.12.32-xanmod1**       | 3 phút 7 giây (\~187.5s)  | **5.47 MB/s**         | 🔼 **+1.86%**                |
-
----
-
-- Kết quả ở trên là đánh giá theo test nhanh 1 lần duy nhất (thường tối thiểu nên chạy 1 bài test 3 lần, lấy kết quả trung bình)
-- Nó lại tính theo Kernel +  System Optimization đã cấu hình, sai số sẽ rất nhiều
-- Muốn kết quả chính xác hơn, chỉ nên cài duy nhất kernel rồi chạy các bài test để đánh giá
-- Trường hợp khác biệt tùy vào CPU, RAM, (I/O) có thể cho ra kết quả khác nhau
-
+XanMod Kernel thường không cho ra điểm số cao, dùng vì đơn giản muốn thử xem thế nào 😅
