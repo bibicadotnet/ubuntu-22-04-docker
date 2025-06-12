@@ -63,39 +63,33 @@ THÔNG TIN HỆ THỐNG
 ----------------------------------------
 Hostname            : ubuntu
 OS                  : Ubuntu 22.04.5 LTS
-Kernel              : 6.15.1-x64v3-xanmod1
+Kernel              : 6.15.2-x64v3-xanmod1
 Arch                : x86_64 (64-bit)
 CPU                 : AMD EPYC 7551 32-Core Processor
 CPU Cores           : 2
-RAM                 : 955 MB total, 133 MB used, 696 MB available
-Swap                : 1.0 GB total, 0 MB used, 1.0 GB free
-Disk                : 46G total, 4.1G used, 40G free
-Public IP           : 146.215.215.158
-Private IP          : 10.0.0.197
+RAM                 : 955 MB total, 139 MB used, 690 MB available
+Swap                : 2.0 GB total, 0 MB used, 2.0 GB free
+Disk                : 46G total, 5.1G used, 39G free
+Public IP           : 123.123.123.123
+Private IP          : 10.0.0.117
 Main Interface      : ens3
 TCP CC              : bbr
 Virtualization      : kvm
-Load Average        : 0.02, 0.08, 0.04
-Uptime              : 4 minutes
+Load Average        : 0.29, 0.09, 0.03
+Uptime              : 0 minutes
 Location            : San Jose, US
-System Time         : 08/06/2025 at 08:08 AM (GMT+07:00)
+System Time         : 12/06/2025 at 11:11 PM (GMT+07:00)
 
 ========================================
 CẤU HÌNH HỆ THỐNG
 ----------------------------------------
-[sysctl.conf]
+[Disable IPv6]
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr
-vm.swappiness=10
-vm.dirty_ratio=5
-vm.dirty_background_ratio=2
-vm.dirty_expire_centisecs=1000
-vm.dirty_writeback_centisecs=200
-vm.vfs_cache_pressure=200
-fs.file-max=30000
+
+[Memory Config]
+vm.swappiness = 10
 
 [Docker 28.2.2]
 storage-driver=overlay2
@@ -113,7 +107,7 @@ nameserver 1.1.1.1
 
 [Chrony]
 Chrony trạng thái : Normal
-Sai số đồng bộ    : ±3.05 ms
+Sai số đồng bộ    : ±1.87 ms
 
 [Phần mềm đã cài đặt]
 curl wget git htop unzip nano zip zstd jq sudo python3 lsof
