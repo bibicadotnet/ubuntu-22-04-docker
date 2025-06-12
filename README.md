@@ -28,7 +28,15 @@ Bản Debloat viết riêng khi sử dụng Ubuntu 22.04 Minimal cài qua bộ r
 
 ---
 
-### 3. Cài đặt XanMod Kernel trên Debian
+### 3. System Optimization
+```
+wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
+```
+Các thiết lập rất cơ bản
+
+---
+
+### 4. Cài đặt XanMod Kernel trên Debian
 ```
 wget -qO xanmod-installer.sh https://go.bibica.net/xanmod && bash xanmod-installer.sh
 ```
@@ -39,14 +47,6 @@ Thử nhánh Main, Edge hoặc LTS tùy thích, bản nào cho hiệu năng ping
 - XXanMod LTS (Long Term Support): phiên bản ổn định nhất (thường dành cho các hệ thống cần ổn định cao nhất)
 
 Thấy không hiệu quả thì sử dụng tùy chon 4 để về lại Kernel mặc định
-
----
-
-### 4. System Optimization
-```
-wget -qO vps.sh https://go.bibica.net/system_optimization_v2 && sudo bash vps.sh
-```
-Các thiết lập rất cơ bản
 
 ---
 
