@@ -275,7 +275,7 @@ cat <<EOF > /etc/docker/daemon.json
   },
   "max-concurrent-downloads": 10,
   "max-concurrent-uploads": 10,
-  "dns": ["8.8.8.8", "1.1.1.1"],
+  "dns": ["1.1.1.1", "8.8.8.8"],
   "userland-proxy": false
 }
 EOF
