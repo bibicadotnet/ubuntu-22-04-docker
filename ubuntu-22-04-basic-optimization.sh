@@ -28,8 +28,8 @@ fi
 
 # Danh sách các ứng dụng cần thiết
 ESSENTIAL_APPS=(
-    curl wget git htop unzip nano zip zstd jq sudo 
-    python3 net-tools lsof iputils-ping chrony
+    curl wget git htop unzip nano zip zstd jq sudo bc
+    python3 net-tools lsof iputils-ping chrony dnsutils
 )
 
 # ========================================
