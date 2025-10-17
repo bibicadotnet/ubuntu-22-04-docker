@@ -207,6 +207,16 @@ timedatectl set-timezone Asia/Ho_Chi_Minh
 systemctl start chrony
 systemctl enable chrony
 
+# Bật TCP BBR nếu kernel hỗ trợ
+if modinfo tcp_bbr &>/dev/null; then
+    modprobe tcp_bbr 2>/dev/null || true
+    cat <<EOF > /etc/sysctl.d/99-bbr.conf
+net.ipv4.tcp_congestion_control = bbr
+EOF
+    sysctl -p /etc/sysctl.d/99-bbr.conf
+    echo tcp_bbr > /etc/modules-load.d/bbr.conf
+fi
+
 # ========================================
 # TẠO VÀ CẤU HÌNH SWAP
 # ========================================
